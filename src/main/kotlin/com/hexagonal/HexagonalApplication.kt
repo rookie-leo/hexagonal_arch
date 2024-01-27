@@ -1,9 +1,10 @@
 package com.hexagonal
 
-import com.hexagonal.application.core.domain.Customer
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
+import org.springframework.cloud.openfeign.EnableFeignClients
 
+@EnableFeignClients
 @SpringBootApplication
 class HexagonalApplication
 

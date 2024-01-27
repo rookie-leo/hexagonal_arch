@@ -1,0 +1,4 @@
+cep:
+  client:
+    address:
+        url: http://localhost:8082/address #https://viacep.com.br/ws/
