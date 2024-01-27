@@ -1,7 +1,7 @@
 package com.hexagonal.application.core.domain
 
 data class Customer(
-    val id: String,
+    var id: String,
     val name: String,
     var address: Address,
     val cpf: String,
