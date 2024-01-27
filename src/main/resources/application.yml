@@ -2,3 +2,8 @@ cep:
   client:
     address:
         url: http://localhost:8082/address #https://viacep.com.br/ws/
+
+spring:
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/hexagonal
