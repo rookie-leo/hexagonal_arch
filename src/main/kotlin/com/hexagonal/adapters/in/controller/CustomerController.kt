@@ -5,11 +5,14 @@ import com.hexagonal.adapters.`in`.controller.request.CustomerRequest
 import com.hexagonal.adapters.`in`.controller.response.CustomerResponse
 import com.hexagonal.application.ports.`in`.FindCustomerByIdInputPort
 import com.hexagonal.application.ports.`in`.InsertCustomerInputPort
+import com.hexagonal.application.ports.`in`.UpdateCustomerInputPort
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
@@ -20,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController
 class CustomerController(
     val insertCustomerInputPort: InsertCustomerInputPort,
     val findCustomerByIdInputPort: FindCustomerByIdInputPort,
+    val updateCustomerInputPort: UpdateCustomerInputPort,
     val customerMapper: CustomerMapper
 ) {
 
@@ -33,6 +37,14 @@ class CustomerController(
     fun findById(id: String): ResponseEntity<CustomerResponse> {
         val customer = findCustomerByIdInputPort.find(id)
         return ResponseEntity.ok(customerMapper.toCustomerResponse(customer))
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    fun update(@PathVariable("id") id: String, @Valid @RequestBody customerRequest: CustomerRequest) {
+        val customer = customerMapper.toCustomer(customerRequest)
+        customer.id = id
+        updateCustomerInputPort.update(customer, customerRequest.zipCode)
     }
 
 }
