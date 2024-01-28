@@ -3,20 +3,14 @@ package com.hexagonal.adapters.`in`.controller
 import com.hexagonal.adapters.`in`.controller.mapper.CustomerMapper
 import com.hexagonal.adapters.`in`.controller.request.CustomerRequest
 import com.hexagonal.adapters.`in`.controller.response.CustomerResponse
+import com.hexagonal.application.ports.`in`.DeleteCustomerByIdInputPort
 import com.hexagonal.application.ports.`in`.FindCustomerByIdInputPort
 import com.hexagonal.application.ports.`in`.InsertCustomerInputPort
 import com.hexagonal.application.ports.`in`.UpdateCustomerInputPort
 import jakarta.validation.Valid
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.PutMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.ResponseStatus
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/customers")
@@ -24,6 +18,7 @@ class CustomerController(
     val insertCustomerInputPort: InsertCustomerInputPort,
     val findCustomerByIdInputPort: FindCustomerByIdInputPort,
     val updateCustomerInputPort: UpdateCustomerInputPort,
+    val deleteCustomerByIdInputPort: DeleteCustomerByIdInputPort,
     val customerMapper: CustomerMapper
 ) {
 
@@ -47,4 +42,9 @@ class CustomerController(
         updateCustomerInputPort.update(customer, customerRequest.zipCode)
     }
 
+    @DeleteMapping("/{id}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    fun delete(@PathVariable("id") id: String) {
+        deleteCustomerByIdInputPort.delete(id)
+    }
 }
